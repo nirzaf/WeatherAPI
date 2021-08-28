@@ -30,13 +30,15 @@ namespace WeatherAPI.Controllers
         public async Task<IActionResult> Index()
         {
             var newWeather = new Weather();
-            var weatherModel = await _context.Weather.ToListAsync();
+            var weatherModel = new List<Weather>();
             var w = FromApi();
+            newWeather.Id = new Guid();
             newWeather.Humidity = w.Humidity;
             newWeather.Temperature = w.Temperature;
             newWeather.MinTemperature = w.MinTemperature;
             newWeather.MaxTemperature = w.MaxTemperature;
             weatherModel.Add(newWeather);
+            weatherModel.AddRange(await _context.Weather.ToListAsync());
             return View(weatherModel);
         }
 
