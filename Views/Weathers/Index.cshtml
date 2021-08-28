@@ -14,24 +14,25 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Humidity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Temperature)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MinTemperature)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaxTemperature)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Humidity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Temperature)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MinTemperature)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaxTemperature)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Humidity)
@@ -53,6 +54,6 @@
                 </div>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
