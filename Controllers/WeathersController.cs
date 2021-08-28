@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WeatherAPI.Models;
 
 namespace WeatherAPI.Controllers
@@ -20,6 +25,42 @@ namespace WeatherAPI.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Weather.ToListAsync());
+        }
+
+        public async Task<IActionResult> FromApi()
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("http://demo4567044.mockable.io/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            //client.DefaultRequestHeaders.Accept.Add(
+            //    new MediaTypeWithQualityHeaderValue("application/json"));
+
+            try
+            {
+                var product = new WeatherViewModel();
+                var request = new HttpRequestMessage(HttpMethod.Get, client.BaseAddress);
+                request.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml");
+                request.Headers.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate");
+                request.Headers.TryAddWithoutValidation("User-Agent",
+                    "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
+                request.Headers.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
+
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    using var responseStream = await response.Content.ReadAsStreamAsync();
+                    //var result = JsonSerializer.Deserialize
+                    //    <IEnumerable<WeatherViewModel>>(responseStream);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return View(null);
+            //return View(await _context.Weather.ToListAsync());
         }
 
         // GET: Weathers/Details/5
@@ -46,7 +87,8 @@ namespace WeatherAPI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Id,Humidity,Temperature,MinTemperature,MaxTemperature")] Weather weather)
+            [Bind("Id,Humidity,Temperature,MinTemperature,MaxTemperature")]
+            Weather weather)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +117,8 @@ namespace WeatherAPI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id,
-            [Bind("Id,Humidity,Temperature,MinTemperature,MaxTemperature")] Weather weather)
+            [Bind("Id,Humidity,Temperature,MinTemperature,MaxTemperature")]
+            Weather weather)
         {
             if (id != weather.Id) return NotFound();
 
