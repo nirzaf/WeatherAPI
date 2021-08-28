@@ -22,7 +22,7 @@ namespace WeatherAPI
         {
             services.AddDbContext<AppDbContext>(
                 c => c.UseSqlServer(
-                    Configuration.GetConnectionString("ConnectionStrings")
+                    Configuration.GetConnectionString("DefaultConnection")
                 ));
             services.AddControllersWithViews();
         }
