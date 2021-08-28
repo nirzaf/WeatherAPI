@@ -9,6 +9,6 @@ namespace WeatherAPI.Models
         {
         }
 
-        public DbSet<Weather.Data.Weather> Weather { get; set; }
+        public DbSet<Weather> Weather { get; set; }
     }
 }

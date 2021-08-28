@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Weather.Data
+namespace WeatherAPI.Models
 {
     public class Weather
     {

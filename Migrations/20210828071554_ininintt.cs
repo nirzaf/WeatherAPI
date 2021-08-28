@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WeatherAPI.Migrations
 {
-    public partial class it : Migration
+    public partial class ininintt : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -10,8 +10,8 @@ using WeatherAPI.Models;
 namespace WeatherAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210828070915_it")]
-    partial class it
+    [Migration("20210828071554_ininintt")]
+    partial class ininintt
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace WeatherAPI.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Weather.Data.Weather", b =>
+            modelBuilder.Entity("WeatherAPI.Models.Weather", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

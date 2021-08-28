@@ -19,7 +19,7 @@ namespace WeatherAPI.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Weather.Data.Weather", b =>
+            modelBuilder.Entity("WeatherAPI.Models.Weather", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
