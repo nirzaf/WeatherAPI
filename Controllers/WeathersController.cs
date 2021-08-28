@@ -2,8 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,34 +27,31 @@ namespace WeatherAPI.Controllers
         // GET: Weathers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Weather.ToListAsync());
+            var newWeather = new Weather();
+            var weatherModel = await _context.Weather.ToListAsync();
+            var w = FromApi();
+            newWeather.Humidity = w.Humidity;
+            newWeather.Temperature = w.Temperature;
+            newWeather.MinTemperature = w.MinTemperature;
+            newWeather.MaxTemperature = w.MaxTemperature;
+            weatherModel.Add(newWeather);
+            return View(weatherModel);
         }
 
-        public async Task<IActionResult> FromApi()
+        public WeatherViewModel FromApi()
         {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri("http://demo4567044.mockable.io/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            //client.DefaultRequestHeaders.Accept.Add(
-            //    new MediaTypeWithQualityHeaderValue("application/json"));
-
+            var weather = new WeatherViewModel();
             try
             {
-                var product = new WeatherViewModel();
-                var request = new HttpRequestMessage(HttpMethod.Get, client.BaseAddress);
-                request.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml");
-                request.Headers.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate");
-                request.Headers.TryAddWithoutValidation("User-Agent",
-                    "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
-                request.Headers.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
-
-                var response = await client.SendAsync(request);
-
+                var w = new WeatherViewModel();
+                var httpClient1 = new HttpClient();
+                var apiUrl = "http://demo4567044.mockable.io/";
+                httpClient1.BaseAddress = new Uri(apiUrl);
+                var response = httpClient1.GetAsync("weather").Result;
                 if (response.IsSuccessStatusCode)
                 {
-                    using var responseStream = await response.Content.ReadAsStreamAsync();
-                    //var result = JsonSerializer.Deserialize
-                    //    <IEnumerable<WeatherViewModel>>(responseStream);
+                    var message = response.Content.ReadAsStringAsync().Result;
+                    weather = JsonConvert.DeserializeObject<WeatherViewModel>(message);
                 }
             }
             catch (Exception e)
@@ -59,8 +59,7 @@ namespace WeatherAPI.Controllers
                 Console.WriteLine(e.Message);
             }
 
-            return View(null);
-            //return View(await _context.Weather.ToListAsync());
+            return weather;
         }
 
         // GET: Weathers/Details/5
