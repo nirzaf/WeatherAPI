@@ -10,5 +10,6 @@ namespace WeatherAPI.Models
         }
 
         public DbSet<Weather> Weather { get; set; }
+        public DbSet<Token.Token> Tokens { get; set; }
     }
 }

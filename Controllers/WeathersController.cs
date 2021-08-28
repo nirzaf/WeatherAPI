@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using WeatherAPI.Filters;
 using WeatherAPI.Models;
 
 namespace WeatherAPI.Controllers
@@ -19,6 +20,7 @@ namespace WeatherAPI.Controllers
     {
         private readonly AppDbContext _context;
 
+        [AuthenticationFilter]
         public WeathersController(AppDbContext context)
         {
             _context = context;
